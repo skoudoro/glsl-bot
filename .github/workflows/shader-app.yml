@@ -19,7 +19,7 @@ jobs:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
       CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
-      CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}:  
+      CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }} 
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.8
