@@ -2,8 +2,8 @@ keywords:
 
   - glsl
   - hlsl
-  - shader
-  - shaders
+  # - shader
+  # - shaders
 
 settings:
 
