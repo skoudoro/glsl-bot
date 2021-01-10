@@ -34,17 +34,32 @@ def like_and_retweet():
     # Define Keywords
     lang = config.get('settings', {}).get('language', 'en')
     max_tweet = config.get('settings', {}).get('max_tweet', '4')
+    max_hashtags = config.get('settings', {}).get('max_hashtags', '7')
     keywords = [f'#{k}' for k in config.get('keywords', [])]
     keywords = ' OR '.join(keywords) + '  -filter:retweets'
+    excluded = config.get('exclude', [])
 
     new_tweet = 0
-    for tweet in tweepy.Cursor(api.search, q=(keywords), lang=lang).items(15):
+    for tweet in tweepy.Cursor(api.search, q=(keywords), lang=lang,
+                               tweet_mode="extended").items(15):
         try:
             # Add \n escape character to print() to organize tweets
             print('\nTweet by: @' + tweet.user.screen_name)
 
             if tweet.retweeted:
                 print('Already Retweeted')
+                continue
+
+            msg_attr = 'text' if hasattr(tweet, 'text') else 'full_text'
+            message = getattr(tweet, msg_attr).lower()
+            contains_excluded = [word for word in excluded if word in message]
+            if contains_excluded:
+                print(f'contains excluded words: {contains_excluded}')
+                continue
+
+            hashtags_count = len(tweet.entities.get('hashtags', []))
+            if hashtags_count >= max_hashtags:
+                print(f'Too many hashtags: {hashtags_count}')
                 continue
 
             # Retweet tweets as they are found

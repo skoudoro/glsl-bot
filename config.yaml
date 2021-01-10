@@ -5,8 +5,12 @@ keywords:
   # - shader
   # - shaders
 
+exclude:
+  - jangoinka.com
+
 settings:
 
   language: en
   max_tweet: 4
+  max_hashtags: 8
 
