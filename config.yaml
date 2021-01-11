@@ -6,7 +6,10 @@ keywords:
   # - shaders
 
 exclude:
-  - jangoinka.com
+  users:
+    #- jogoinka
+  words:
+    - jangoinka.com
 
 settings:
 

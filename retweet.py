@@ -37,25 +37,38 @@ def like_and_retweet():
     max_hashtags = config.get('settings', {}).get('max_hashtags', '7')
     keywords = [f'#{k}' for k in config.get('keywords', [])]
     keywords = ' OR '.join(keywords) + '  -filter:retweets'
-    excluded = config.get('exclude', [])
+    excluded_words = config.get('exclude', {}).get('words', []) or []
+    excluded_users = config.get('exclude', {}).get('users', []) or []
 
     new_tweet = 0
     for tweet in tweepy.Cursor(api.search, q=(keywords), lang=lang,
                                tweet_mode="extended").items(15):
         try:
-            # Add \n escape character to print() to organize tweets
-            print('\nTweet by: @' + tweet.user.screen_name)
 
             if tweet.retweeted:
                 print('Already Retweeted')
                 continue
 
+            contains_excluded = [user for user in excluded_users
+                                 if user in tweet.user.screen_name]
+            if contains_excluded:
+                print(f'contains excluded users: {contains_excluded}')
+                continue
+
+            # Add \n escape character to print() to organize tweets
+            print('\nTweet by: @' + tweet.user.screen_name)
+
             msg_attr = 'text' if hasattr(tweet, 'text') else 'full_text'
             message = getattr(tweet, msg_attr).lower()
-            contains_excluded = [word for word in excluded if word in message]
+            contains_excluded = [word for word in excluded_words
+                                 if word in message]
             if contains_excluded:
                 print(f'contains excluded words: {contains_excluded}')
                 continue
+
+            # Like the tweet
+            tweet.favorite()
+            print('Like the tweet')
 
             hashtags_count = len(tweet.entities.get('hashtags', []))
             if hashtags_count >= max_hashtags:
@@ -65,8 +78,7 @@ def like_and_retweet():
             # Retweet tweets as they are found
             tweet.retweet()
             print('Retweeted the tweet')
-            tweet.favorite()
-            print('Like the tweet')
+
             sleep(10)
             new_tweet += 1
             if new_tweet == max_tweet:
