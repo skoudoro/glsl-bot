@@ -44,7 +44,6 @@ def like_and_retweet():
     for tweet in tweepy.Cursor(api.search, q=(keywords), lang=lang,
                                tweet_mode="extended").items(15):
         try:
-
             if tweet.retweeted:
                 print('Already Retweeted')
                 continue
@@ -59,7 +58,13 @@ def like_and_retweet():
             print('\nTweet by: @' + tweet.user.screen_name)
 
             msg_attr = 'text' if hasattr(tweet, 'text') else 'full_text'
-            message = getattr(tweet, msg_attr).lower()
+            message = getattr(tweet, msg_attr)
+            urls_in_msg = tweet.entities.get('urls', [])
+            for url in urls_in_msg:
+                message = message.replace(url.get('url', ''),
+                                          url.get('display_url', ''))
+
+            message = message.lower()
             contains_excluded = [word for word in excluded_words
                                  if word in message]
             if contains_excluded:
