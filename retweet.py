@@ -48,8 +48,10 @@ def like_and_retweet():
                 print('Already Retweeted')
                 continue
 
+            current_user = tweet.user.screen_name or ''
+            current_user = current_user.lower()
             contains_excluded = [user for user in excluded_users
-                                 if user in tweet.user.screen_name]
+                                 if user in current_user]
             if contains_excluded:
                 print(f'contains excluded users: {contains_excluded}')
                 continue

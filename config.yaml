@@ -7,6 +7,7 @@ keywords:
 
 exclude:
   users:
+    - awwwards
     #- jogoinka
   words:
     - jangoinka.com
