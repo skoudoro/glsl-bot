@@ -9,9 +9,19 @@ exclude:
   users:
     - awwwards
     - margheritapvr
+    - git_shit
+    - scenomics
+    - cesar3dartist
+    - cem_yuksel
+    - shade_radio
+    - nerddisco
+    - agoblinlife
+    - pablolarah
     #- jogoinka
   words:
     - jangoinka.com
+    - udemy
+    - instagram
 
 settings:
 
