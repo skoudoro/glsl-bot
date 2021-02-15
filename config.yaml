@@ -17,11 +17,14 @@ exclude:
     - nerddisco
     - agoblinlife
     - pablolarah
+    - helpwantedbot
     #- jogoinka
   words:
     - jangoinka.com
     - udemy
     - instagram
+    - awwwards
+
 
 settings:
 
